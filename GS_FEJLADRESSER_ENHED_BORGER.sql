@@ -10,5 +10,5 @@ SELECT DISTINCT
 FROM 
 				GS_BBREnhed RIGHT OUTER JOIN
 				GS_BORGER ON GS_BBREnhed.UDVadresseID = GS_BORGER.UDVadresseID
-WHERE (GS_BBREnhed.Boligtypekode = '0') OR
+WHERE (GS_BBREnhed.Boligtypekode < '1') OR
 				(GS_BBREnhed.Boligtypekode IS NULL)
