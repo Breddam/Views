@@ -1,0 +1,8 @@
+SELECT DISTINCT 
+                         dbo.GS_BORGER.ADRESSE, RTRIM(dbo.GS_BORGER.SUPBYNAVN) AS SUPBYNAVN, dbo.GS_BORGER.POSTNR, dbo.GS_BORGER.POSTBYNAVN, 
+                         RTRIM(dbo.GS_BBREnhed.BOLIGTYPEKODE) AS BOLIGTYPEKODE, dbo.GS_BORGER.ADRESSELINK_ID, dbo.GS_BORGER.ADRESSE_ID, 
+                         dbo.GS_BORGER.UDVADRESSEID
+FROM            dbo.GS_BBREnhed RIGHT OUTER JOIN
+                         dbo.GS_BORGER ON dbo.GS_BBREnhed.UDVADRESSEID = dbo.GS_BORGER.UDVADRESSEID
+WHERE        (dbo.GS_BBREnhed.BOLIGTYPEKODE < '1') OR
+                         (dbo.GS_BBREnhed.BOLIGTYPEKODE IS NULL)
