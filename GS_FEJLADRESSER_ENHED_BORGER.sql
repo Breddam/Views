@@ -1,6 +1,6 @@
 SELECT DISTINCT 
 				GS_BORGER.Adresse, 
-				GS_BORGER.SUPBYNAVN, 
+				GS_BORGER.Supplerende_bynavn, 
 				GS_BORGER.POSTNR, 
 				GS_BORGER.POSTBYNAVN,
 				GS_BBREnhed.Boligtypekode, 
