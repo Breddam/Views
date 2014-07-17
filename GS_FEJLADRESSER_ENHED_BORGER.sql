@@ -1,6 +1,6 @@
 SELECT DISTINCT 
 				GS_BORGER.Adresse, 
-				GS_BORGER.Supplerende_bynavn, 
+				GS_BORGER.SUPBYNAVN, 
 				GS_BORGER.POSTNR, 
 				GS_BORGER.POSTBYNAVN,
 				GS_BBREnhed.Boligtypekode, 
@@ -10,5 +10,5 @@ SELECT DISTINCT
 FROM 
 				GS_BBREnhed RIGHT OUTER JOIN
 				GS_BORGER ON GS_BBREnhed.UDVadresseID = GS_BORGER.UDVadresseID
-WHERE (GS_BBREnhed.Boligtypekode < '1') OR
+WHERE (GS_BBREnhed.Boligtypekode < '0') OR
 				(GS_BBREnhed.Boligtypekode IS NULL)
