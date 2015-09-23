@@ -1,51 +1,74 @@
 SELECT
-				A.P_NUMMER,
-				A.CVR_ID AS CVR_nummer,
-				A.NAVN_1_REDIGERET AS NAVN_1,
-				A.NAVN_2_REDIGERET AS NAVN_2,
-				A.NAVN_3_REDIGERET AS NAVN_3,
-				A.NAVN_UREDIGERET AS NAVN,
-				A.CO_NAVN,
-				A.AVEJ_OFFADR AS Officiel_adresse,
-				A.EPOST_OFFADR AS Postnummer,
-				A.HPOSTDIST_OFFADR AS Postdistrikt,
-				A.DSTART_CVR_P_NUMME AS Startdato_CVR_P_nummer,
-				A.CVIRKBRANCE AS Hovedbranchekode,
-				QL57200V.TEKST AS Hovedbranche,
-				A.CVIRKBIBRANCE1 AS Bibranchekode_1,
-				QL57200V_1.TEKST AS CVIRKBIBRANCE1,
-				A.CVIRKBIBRANCE2 AS Bibranchekode_2,
-				QL57200V_2.TEKST AS Bibranche_2,
-				A.CVIRKBIBRANCE3 AS Bibranchekode_3,
-				QL57200V_3.TEKST AS Bibranche_3,
-				A.CVIRKSTOR AS Størrelseskode,
-				QL57100V.TEKST AS Virksomhedsstørrelse,
-				A.ANTAL_ANSATTE AS Antal_ansatte,
-				A.TELEFONNUMMER_KONTAKTOPLYSNING AS Telefonnummer,
-				A.TELEFAX_KONTAKTOPLYSNING AS Telefax,
-				A.EMAIL_KONTAKTOPLYSNING AS Email,
-				A.DAJOUR_CVR_P_NUMME AS Ajourf_dato_CVR_P_nummer,
-				A.DOPHOR AS Ophørsdato,
-				A.DAJOUR_KMD AS Ajourføringdato_CVR_EogM,
-				CONVERT(char(1), A.COPDATERING)  AS Opdateringskode_CVR,
-				A.EKOMNR AS Kommunenummer,
-				A.CVEJK AS Vejkode,
-				A.EHUSFRA_OFFADR AS Husnummer,
-				A.AHUSBFRA_OFFADR AS Husbogstav,
-				A.ETAGE_OFFADR AS Etage,
-				A.SIDE_OFFADR AS Side_dørnr,
-				JY72000V.ESREJDNR,
-				CONVERT(varchar, JY72000V.LANDSEJERLAVKODE) + CONVERT(varchar, JY72000V.MATRNR) AS MATRIKELID,
-				CONVERT(varchar, A.EKOMNR)  + RIGHT('0000' + CONVERT(VARCHAR, A.CVEJK), 4) + RIGHT('000' + CONVERT(VARCHAR, A.EHUSFRA_OFFADR), 3) + RTRIM(A.AHUSBFRA_OFFADR)  AS ADRESSELINK_ID,
-				CONVERT(varchar, A.EKOMNR) + CONVERT(varchar, A.CVEJK) + RIGHT('000' + CONVERT(VARCHAR, A.EHUSFRA_OFFADR), 3) + RTRIM(A.AHUSBFRA_OFFADR) AS ADRESSE_ID,
-				JY72000V.ADG_ID
+				A.pnr AS P_NUMMER,
+				A.virksomhed_cvrnr AS CVR_Nummer,
+				A.navn_tekst AS Navn,
+				A.beliggenhedsadresse_coNavn AS CO_Navn,
+				(RTRIM(A.beliggenhedsadresse_vejnavn) + ' ' + CONVERT(VARCHAR,A.beliggenhedsadresse_husnummerFra)+LTRIM(A.beliggenhedsadresse_bogstavFra)+
+				CASE
+					WHEN A.beliggenhedsadresse_etage <> '' Then ', '
+					WHEN A.beliggenhedsadresse_etage ='' AND  A.beliggenhedsadresse_sidedoer <> '' Then ', '
+					ELSE ''
+				END
+				+ RTRIM(A.beliggenhedsadresse_etage)+
+				CASE
+					WHEN A.beliggenhedsadresse_etage <> '' Then '.'
+					ELSE ''
+				END
+				+ A.beliggenhedsadresse_sidedoer) AS Adresse,
+				A.beliggenhedsadresse_bynavn,
+				A.beliggenhedsadresse_postnr AS Postnummer,
+				A.beliggenhedsadresse_postdistrikt AS Postdistrikt,
+				A.livsforloeb_startdato AS Startdato_CVR_P_Nummer,
+				A.hovedbranche_kode AS Hovedbranchekode,
+				A.hovedbranche_tekst AS Hovedbranche,
+				A.bibranche1_kode AS Bibranchekode_1,
+				A.bibranche1_tekst AS Bibranche_1,
+				A.bibranche2_kode AS Bibranchekode_2,
+				A.bibranche2_tekst AS Bibranche_2,
+				A.bibranche3_kode AS Bibranchekode_3,
+				A.bibranche3_tekst AS Bibranche_3,
+				CASE
+				  WHEN A.AARSBESKAEFTIGELSE_ANTALANSATTEINTERVAL = '0' Then 'B'
+				  WHEN A.AARSBESKAEFTIGELSE_ANTALANSATTEINTERVAL = '1' Then 'C'
+				  WHEN A.AARSBESKAEFTIGELSE_ANTALANSATTEINTERVAL = '2 - 4' Then 'D'
+				  WHEN A.AARSBESKAEFTIGELSE_ANTALANSATTEINTERVAL = '5 - 9' Then 'E'
+				  WHEN A.AARSBESKAEFTIGELSE_ANTALANSATTEINTERVAL = '10 - 19' Then 'F'
+				  WHEN A.AARSBESKAEFTIGELSE_ANTALANSATTEINTERVAL = '20 - 49' Then 'G'
+				  WHEN A.AARSBESKAEFTIGELSE_ANTALANSATTEINTERVAL = '50 - 99' Then 'H'
+				  WHEN A.AARSBESKAEFTIGELSE_ANTALANSATTEINTERVAL = '100 - 199' Then 'I'
+				  WHEN A.AARSBESKAEFTIGELSE_ANTALANSATTEINTERVAL = '200 - 499' Then 'J'
+				  WHEN A.AARSBESKAEFTIGELSE_ANTALANSATTEINTERVAL = '500 - 999' Then 'K'
+				  WHEN A.AARSBESKAEFTIGELSE_ANTALANSATTEINTERVAL = '1000+' Then 'L'
+				  else 'M'
+				END AS Stoerrelseskode,
+				A.aarsbeskaeftigelse_antalAnsatteInterval AS Virksomhedsstoerrelse,
+				A.aarsbeskaeftigelse_antalAnsatte AS Antal_ansatte,
+				A.telefonnummer_kontaktoplysning AS Telefonnummer,
+				A.telefax_kontaktoplysning AS Telefax,
+				A.email_kontaktoplysning AS Email,
+				A.ajourfoeringsdato AS Ajourf_dato_CVR_P_nummer,
+				A.livsforloeb_ophoersdato AS Ophoersdato,
+				A.beliggenhedsadresse_kommune_kode AS Kommunenummer,
+				ADG.ESREJDNR AS ESREjdnr,
+				A.beliggenhedsadresse_vejkode AS Vejkode,
+				A.beliggenhedsadresse_husnummerFra AS Husnr_Fra,
+				A.beliggenhedsadresse_husnummerTil AS Husnr_Til,
+				A.beliggenhedsadresse_bogstavFra AS Husbogstav_Fra,
+				A.beliggenhedsadresse_bogstavTil AS Husbogstav_Til,
+				A.beliggenhedsadresse_etage AS Etage,
+				A.beliggenhedsadresse_sidedoer AS Side_dørnr,
+				CONVERT(varchar, ADG.LANDSEJERLAVKODE) + CONVERT(varchar, ADG.MATRNR) AS Matrikel_ID,
+				CONVERT(varchar, A.beliggenhedsadresse_kommune_kode)  + RIGHT('0000' + CONVERT(VARCHAR, A.beliggenhedsadresse_vejkode), 4) + RIGHT('000' + CONVERT(VARCHAR, A.beliggenhedsadresse_husnummerFra), 3) + RTRIM(A.beliggenhedsadresse_bogstavFra)  AS AdresseLink_ID,
+				CONVERT(varchar, A.beliggenhedsadresse_kommune_kode) + CONVERT(varchar, A.beliggenhedsadresse_vejkode) + RIGHT('000' + CONVERT(VARCHAR, A.beliggenhedsadresse_husnummerFra), 3) + RTRIM(A.beliggenhedsadresse_bogstavFra) AS Adresse_ID,
+				ADG.ADG_ID
 FROM
-				JYC0200V AS A LEFT OUTER JOIN
-				QL57200V ON A.CVIRKBRANCE = QL57200V.KODE LEFT OUTER JOIN
-				QL57200V AS QL57200V_1 ON A.CVIRKBIBRANCE1 = QL57200V_1.KODE LEFT OUTER JOIN
-				QL57200V AS QL57200V_2 ON A.CVIRKBIBRANCE2 = QL57200V_2.KODE LEFT OUTER JOIN
-				QL57200V AS QL57200V_3 ON A.CVIRKBIBRANCE3 = QL57200V_3.KODE LEFT OUTER JOIN
-				QL57100V ON A.CVIRKSTOR = QL57100V.KODE LEFT OUTER JOIN
-				JY72000V ON CONVERT(varchar, A.EKOMNR) + CONVERT(varchar, A.CVEJK) + RIGHT('000' + CONVERT(VARCHAR, A.EHUSFRA_OFFADR), 3)  + RTRIM(A.AHUSBFRA_OFFADR) = CONVERT(varchar, JY72000V.KOMMUNENUMMER) + CONVERT(varchar, JY72000V.VEJKODE)  + RTRIM(JY72000V.HUS_NR)
-WHERE
-				(A.EKOMNR = 336)
+				CV00200T AS A LEFT OUTER JOIN
+				CV00100T AS B ON A.virksomhed_cvrnr = B.cvrnr LEFT OUTER JOIN
+				JY72000V AS ADG ON
+				A.beliggenhedsadresse_kommune_kode = ADG.KomKode
+				AND A.beliggenhedsadresse_vejkode = ADG.VejKode
+				AND RIGHT('000' + CONVERT(VARCHAR, A.beliggenhedsadresse_husnummerFra), 3)  + RTRIM(A.beliggenhedsadresse_bogstavFra) = ADG.HUS_NR
+WHERE	A.beliggenhedsadresse_kommune_kode = 336
+	AND (A.livsforloeb_ophoersdato = '' or A.livsforloeb_ophoersdato > GetDate())
+
+	-- livsforloeb_ophoersdato er ikke oprettet som date i tabellen, så sidste betingelse er lidt meningsløs...
