@@ -43,15 +43,15 @@ SELECT
 				Jordstykke.GEOMDATO,
 				Jordstykke.PUBLIDATO,
 				Jordstykke.MI_PRINX,
-				Jordstykke.MI_STYLE,
+				CAST('Pen (1,2,0) Brush (1,0,16777215)' AS varchar(254)) AS MI_STYLE,
 				Jordstykke.OBJECTID,
 				Jordstykke.Shape,
 				CASE WHEN CONVERT(VARCHAR,
 					Jordstykke.MATRNR) <> ''
-					THEN CONVERT(VARCHAR,
-					Jordstykke.ELAVSKODE) + '' + CONVERT(VARCHAR,	Jordstykke.MATRNR)
+					THEN CONVERT(VARCHAR, Jordstykke.ELAVSKODE) + '' + CONVERT(VARCHAR,	Jordstykke.MATRNR)
 				END AS MatrikelID,
 				Matrikeladresse.EJENDOMSNR AS EJD_NR,
+				Jordstykke.ELAVSKODE AS Landsejerlavskode,
 				DIMatrikel.CARTK AS Artskode,
 				QL61000V.TEKST AS Matrikeltype
 
