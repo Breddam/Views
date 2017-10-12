@@ -1,5 +1,5 @@
 SELECT
-				CA_GEO_Jordstykker.MATRNR+', '+CA_GEO_Jordstykker.ELAVSNAVN AS Søg,
+				CA_GEO_Jordstykker.MATRNR+', '+CA_GEO_Jordstykker.ELAVSNAVN AS SÃ¸g,
 				RTRIM(JY67700V.VEJ_ADRESSENAVN) + ' ' + REPLACE(LTRIM(REPLACE(RTRIM(JY67700V.HUS_NUMMER), '0', ' ')), ' ', '0') AS Matrikeladresse,
 				JY67300V.EKOMNR AS Kommunenummer,
 				JY67300V.EEJDNR AS Ejendomsnummer,
@@ -36,8 +36,8 @@ SELECT
 				JY67300V.FDIVAR3 AS Diverse_areal_3,
 				JY67300V.CDIVAR3 AS Arealkode_3,
 				QL64000V.TEKST AS Arealkode_3_tekst,
-				JY67300V.CKMSHAEN AS Kode_for_KMS_hændelse,
-				QL66200V.TEKST AS KMS_hændelse,
+				JY67300V.CKMSHAEN AS Kode_for_KMS_hÃ¦ndelse,
+				QL66200V.TEKST AS KMS_hÃ¦ndelse,
 				JY67300V.ETAGEMETER AS Etagemeter,
 				JY67300V.EJERLEJLIGHEDSNR AS Ejerlejlighedsnummer,
 				JY67300V.AMATBOG AS Matrikelnummer_bogstav,
